@@ -15,9 +15,7 @@ namespace PlannerApp
 
         public void addTask(string _queryBody)
         {
-            _queryBody = _queryBody.Trim(' ', '\t');
-
-            if (_queryBody.Length > 0)
+            if (Validator.addOrUpdateValidation(ref _queryBody))
             {
                 taskContext.Tasks.Add(new Task { Content = _queryBody });
                 taskContext.SaveChanges();
@@ -26,9 +24,7 @@ namespace PlannerApp
 
         public void updateTask(Task _task, string _newValue)
         {
-            _newValue = _newValue.Trim(' ', '\t');
-
-            if (_newValue.Length > 0)
+            if (Validator.addOrUpdateValidation(ref _newValue))
             {
                 _task.Content = _newValue;
                 taskContext.SaveChanges();
@@ -36,17 +32,12 @@ namespace PlannerApp
         }
 
         public void removeTask(string _queryBody)
-        {
-            _queryBody = _queryBody.Trim(' ', '\t');
-
-            int tmpId = -1;
-
-            if (Int32.TryParse(_queryBody, out tmpId))
-                if (tmpId > 0 && taskContext.Tasks.Find(tmpId) != null)
-                {
-                    taskContext.Tasks.Remove(taskContext.Tasks.Find(tmpId));
-                    taskContext.SaveChanges();
-                }
+        { 
+            if (Validator.removeOrFindValidation(_queryBody, out int _tmpId) && taskContext.Tasks.Find(_tmpId) != null)
+            {
+                taskContext.Tasks.Remove(taskContext.Tasks.Find(_tmpId));
+                taskContext.SaveChanges();
+            }
         }
 
         public void removeAllTasks()
@@ -57,13 +48,8 @@ namespace PlannerApp
 
         public Task findTask(string _queryBody)
         {
-            _queryBody = _queryBody.Trim(' ', '\t');
-
-            int tmpId = -1;
-
-            if (Int32.TryParse(_queryBody, out tmpId))
-                if (tmpId > 0)
-                    return taskContext.Tasks.Find(tmpId);
+            if (Validator.removeOrFindValidation(_queryBody, out int _tmpId))
+                    return taskContext.Tasks.Find(_tmpId);
 
             return null;
         }
