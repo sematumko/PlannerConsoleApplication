@@ -21,11 +21,11 @@ namespace PlannerApp
 
 
                 if (query.ToLower().StartsWith("add "))
-                    dbWorker.addTask(cutCommand(query));
+                    dbWorker.addTask(query);
 
                 else if (query.ToLower().StartsWith("upd "))
                 {
-                    var tmpTask = dbWorker.findTask(cutCommand(query));
+                    var tmpTask = dbWorker.findTask(query);
 
                     if (tmpTask != null)
                     {
@@ -35,7 +35,7 @@ namespace PlannerApp
                 }
 
                 else if (query.ToLower().StartsWith("del "))
-                    dbWorker.removeTask(cutCommand(query));
+                    dbWorker.removeTask(query);
 
                 else if (query.Equals("clear", StringComparison.InvariantCultureIgnoreCase))
                     dbWorker.removeAllTasks();
@@ -55,8 +55,5 @@ namespace PlannerApp
                     MyDialoger.errorMessage();
             }
         }
-
-        // отсекает команду
-        public static string cutCommand(string _query) => _query.Remove(0, _query.IndexOf(" ") + 1);
     }
 }
